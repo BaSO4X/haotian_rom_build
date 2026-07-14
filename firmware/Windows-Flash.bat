@@ -4,7 +4,7 @@ TITLE[请勿选中窗口，否则卡住无法进行，左上角出现选择字样卡住按回车恢复即可，OKAY
 
 echo ---------------------------------------------------------------------------------------------------------------------
 echo 设备名称           : Xiaomi 15 Pro
-echo ROM作者           : 硫酸钡沉淀
+echo ROM作者            : 硫酸钡沉淀
 echo 刷机脚本作者       : 江南烟雨断桥殇 
 echo ---------------------------------------------------------------------------------------------------------------------
 echo.①刷机包需要完全全部解压出来并不是只解压一个文件解压变成文件夹才算解压成功。
@@ -16,9 +16,9 @@ echo ---------------------------------------------------------------------------
 
 
 if exist bin\windows\fastboot.exe PATH=%PATH%;bin\windows
-if exist images\super.img.zst (
+if exist super.img.zst (
 	echo.正在转换...
-	zstd --rm -d images/super.img.zst -o images/super.img
+	zstd --rm -d super.img.zst -o images/super.img
 	)
 )
 if exist bin\windows\fastboot.exe PATH=%PATH%;bin\windows
