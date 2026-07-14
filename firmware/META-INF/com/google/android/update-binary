@@ -36,7 +36,7 @@ ui_print "ROM作者: 酷安@硫酸钡沉淀"
 ui_print "开始刷写"
 ui_print " "
 
-for partition in abl aop aop_config bluetooth boot cpucp devcfg dsp dtbo featenabler hyp imagefv keymaster modem qupfw recovery shrm tz uefi uefisecapp vbmeta vbmeta_system vendor_boot xbl xbl_config xbl_ramdump; do
+for partition in abl aop aop_config bluetooth boot cpucp cpucp_dtb devcfg dsp dtbo featenabler hyp idmanager imagefv init_boot keymaster modem modemfirmware multiimgqti pdp pdp_cdb pvmfw qupfw shrm soccp_dcd soccp_debug spuservice tz uefi uefisecapp vbmeta vbmeta_system vendor_boot vm-bootsys xbl xbl_config xbl_ramdump recovery; do
     flash_partition $partition                  
 done
 
