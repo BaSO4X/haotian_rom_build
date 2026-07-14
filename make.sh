@@ -207,7 +207,7 @@ mkdir -p "$GITHUB_WORKSPACE"/images
 \cp -rf "$GITHUB_WORKSPACE"/files/common/* "$GITHUB_WORKSPACE"/images/
 echo "处理build.prop"
 cat "$GITHUB_WORKSPACE"/files/build.prop >> "$GITHUB_WORKSPACE"/images/mi_ext/etc/build.prop
-curl -s https://api.github.com/repos/BaSO4X/Backup/releases/tags/backup | grep -o 'https://[^"]*MiuiCamera\.apk' | xargs -I {} aria2c -x16 -s16 -o MiuiCamera.apk {} -d "${GITHUB_WORKSPACE}/images/product/priv-app/MiuiCamera"
+curl -s https://api.github.com/repos/BaSO4X/Backup/releases/tags/15pro | grep -o 'https://[^"]*MiuiCamera\.apk' | xargs -I {} aria2c -x16 -s16 -o MiuiCamera.apk {} -d "${GITHUB_WORKSPACE}/images/product/priv-app/MiuiCamera"
 End_Time 功能修复
 ### 功能修复结束
 

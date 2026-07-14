@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<display-config>
+    <game_app_category_list>
+        <game_app_category_emotion>
+            <item>com.netease.sky</item>
+            <item>com.netease.sky.mi</item>
+            <item>com.tencent.lolm</item>
+            <item>com.netease.mhxyhtb</item>
+            <item>com.netease.my</item>
+            <item>com.tencent.jkchess</item>
+            <item>com.tencent.tmgp.cod</item>
+            <item>com.miHoYo.bh3</item>
+            <item>com.miHoYo.bh3.mi</item>
+            <item>com.tencent.tmgp.pubgmhd</item>
+            <item>com.miHoYo.Yuanshen</item>
+            <item>com.tencent.tmgp.sgame</item>
+            <item>com.tencent.tmgp.speedmobile</item>
+        </game_app_category_emotion>
+        <game_app_category_night>
+            <item>com.tencent.tmgp.sgame</item>
+            <item>com.tencent.tmgp.pubgmhd</item>
+            <item>com.miHoYo.ys.mi</item>
+            <item>com.miHoYo.Yuanshen</item>
+            <item>com.miHoYo.hkrpg</item>
+            <item>com.miHoYo.GenshinImpact</item>
+            <item>com.tencent.ig</item>
+            <item>com.mobile.legends</item>
+            <item>com.riotgames.league.wildrift</item>
+        </game_app_category_night>
+    </game_app_category_list>
+</display-config>
