@@ -57,3 +57,24 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: true
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: 上传到 OneDrive
+        if: ${{ github.event.inputs.UPLOAD_ONEDRIVE == 'true' }}
+        run: |
+          sudo -v ; curl https://rclone.org/install.sh | sudo bash
+          mkdir -p ~/.config/rclone/
+          echo ${{ secrets.RCLONE_CONFIG }} > base64.txt
+          base64 --decode base64.txt > ~/.config/rclone/rclone.conf
+          rclone copyto \
+            "$GITHUB_WORKSPACE/zip/${{ env.rom_name }}" \
+            "odrive:/15 Pro/${{ env.port_os_version }}/${{ env.rom_name }}" \
+            --transfers=8 \
+            --onedrive-chunk-size=250M \
+            --buffer-size=128M \
+            --no-traverse \
+            --ignore-checksum \
+            --retries=10 \
+            --retries-sleep=5s \
+            --low-level-retries=20 \
+            --timeout=5m \
+            --progress \
+            --log-level INFO
