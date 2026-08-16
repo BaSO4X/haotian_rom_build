@@ -34,3 +34,10 @@ persist.sys.ssr.enable_debug=0
 persist.vendor.sys.rawdump_copy=0
 vendor.bluetooth.startbtlogger=0
 persist.iorapd.log.verbose=false
+#dex2oat
+persist.miui.dexopt.first_use=true
+dalvik.vm.enable_pr_dexopt=true
+dalvik.vm.boot-dex2oat-cpu-set=0,1,2,3,4,5,6,7
+dalvik.vm.background-dex2oat-cpu-set=0,1,2,3,4,5,6,7
+#不显示pwm开关
+ro.display.enable_pwm_switch=false
