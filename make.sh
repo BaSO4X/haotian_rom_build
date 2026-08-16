@@ -207,16 +207,6 @@ mkdir -p "$GITHUB_WORKSPACE"/images
 \cp -rf "$GITHUB_WORKSPACE"/files/common/* "$GITHUB_WORKSPACE"/images/
 echo "处理build.prop"
 cat "$GITHUB_WORKSPACE"/files/build.prop >> "$GITHUB_WORKSPACE"/images/mi_ext/etc/build.prop
-echo "开始添加振动桥服务"
-echo "/vendor/bin/hw/vibrator-bridge u:object_r:hal_vibrator_default_exec:s0" | sudo tee -a "$GITHUB_WORKSPACE"/images/config/vendor_file_contexts
-echo "vendor/bin/hw/vibrator-bridge 0 2000 0755" | sudo tee -a "$GITHUB_WORKSPACE"/images/config/vendor_fs_config
-echo "/vendor/etc/init/vibrator-bridge\.rc u:object_r:vendor_configs_file:s0" | sudo tee -a "$GITHUB_WORKSPACE"/images/config/vendor_file_contexts
-echo "vendor/etc/init/vibrator-bridge.rc 0 0 0644" | sudo tee -a "$GITHUB_WORKSPACE"/images/config/vendor_fs_config
-echo "/vendor/etc/vintf/manifest/vibrator-bridge\.xml u:object_r:vendor_configs_file:s0" | sudo tee -a "$GITHUB_WORKSPACE"/images/config/vendor_file_contexts
-echo "vendor/etc/vintf/manifest/vibrator-bridge.xml 0 0 0644" | sudo tee -a "$GITHUB_WORKSPACE"/images/config/vendor_fs_config
-echo "开始添加selinux策略"
-echo "(allow hal_vibrator_default hal_vibrator_default (binder (call transfer)))" | sudo tee -a "$GITHUB_WORKSPACE"/images/vendor/etc/selinux/vendor_sepolicy.cil
-echo "(typepermissive hal_vibrator_default)" | sudo tee -a "$GITHUB_WORKSPACE"/images/vendor/etc/selinux/vendor_sepolicy.cil
 echo "开始修复人脸识别"
 echo "/product/firmware u:object_r:system_file:s0" | sudo tee -a "$GITHUB_WORKSPACE"/images/config/product_file_contexts
 echo "/product/firmware/vm-system u:object_r:vendor_vm_qti_system_file:s0" | sudo tee -a "$GITHUB_WORKSPACE"/images/config/product_file_contexts
