@@ -179,6 +179,7 @@ rm -rf "$GITHUB_WORKSPACE"/images/product/app/HybridPlatform
 rm -rf "$GITHUB_WORKSPACE"/images/product/app/MiTrustService
 rm -rf "$GITHUB_WORKSPACE"/images/product/app/subscreencenter
 rm -rf "$GITHUB_WORKSPACE"/images/product/data-app/OS2VipAccount
+rm -rf "$GITHUB_WORKSPACE"/images/product/data-app/OS4VipAccount
 rm -rf "$GITHUB_WORKSPACE"/images/product/data-app/SmartHome
 rm -rf "$GITHUB_WORKSPACE"/images/product/data-app/BaiduIME
 rm -rf "$GITHUB_WORKSPACE"/images/product/data-app/Health
@@ -199,7 +200,6 @@ rm -rf "$GITHUB_WORKSPACE"/images/product/data-app/MiRadio
 rm -rf "$GITHUB_WORKSPACE"/images/product/data-app/TinyGame
 rm -rf "$GITHUB_WORKSPACE"/images/product/priv-app/MiniGameService
 rm -rf "$GITHUB_WORKSPACE"/images/product/priv-app/MIUIBrowser
-rm -rf "$GITHUB_WORKSPACE"/images/product/priv-app/MiuiCamera
 echo "精简apk完成"
 echo "当前机型为 $model"
 echo "正在复制文件..."
@@ -224,7 +224,6 @@ echo "/product/firmware/vm-system/system\.img u:object_r:vendor_vm_qti_system_fi
 echo "product/firmware 0 0 0755" | sudo tee -a "$GITHUB_WORKSPACE"/images/config/product_fs_config
 echo "product/firmware/vm-system 0 0 0755" | sudo tee -a "$GITHUB_WORKSPACE"/images/config/product_fs_config
 echo "product/firmware/vm-system/system.img 0 0 0644" | sudo tee -a "$GITHUB_WORKSPACE"/images/config/product_fs_config
-curl -s https://api.github.com/repos/BaSO4X/Backup/releases/tags/15pro | grep -o 'https://[^"]*MiuiCamera\.apk' | xargs -I {} aria2c -x16 -s16 -o MiuiCamera.apk {} -d "${GITHUB_WORKSPACE}/images/product/priv-app/MiuiCamera"
 curl -s https://api.github.com/repos/BaSO4X/Backup/releases/tags/15pro | grep -o 'https://[^"]*system\.img' | xargs -I {} aria2c -x16 -s16 -o system.img {} -d "${GITHUB_WORKSPACE}/images/product/firmware/vm-system"
 End_Time 功能修复
 ### 功能修复结束
