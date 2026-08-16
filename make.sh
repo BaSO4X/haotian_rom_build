@@ -217,7 +217,15 @@ echo "vendor/etc/vintf/manifest/vibrator-bridge.xml 0 0 0644" | sudo tee -a "$GI
 echo "开始添加selinux策略"
 echo "(allow hal_vibrator_default hal_vibrator_default (binder (call transfer)))" | sudo tee -a "$GITHUB_WORKSPACE"/images/vendor/etc/selinux/vendor_sepolicy.cil
 echo "(typepermissive hal_vibrator_default)" | sudo tee -a "$GITHUB_WORKSPACE"/images/vendor/etc/selinux/vendor_sepolicy.cil
+echo "开始修复人脸识别"
+echo "/product/firmware u:object_r:system_file:s0" | sudo tee -a "$GITHUB_WORKSPACE"/images/config/product_file_contexts
+echo "/product/firmware/vm-system u:object_r:vendor_vm_qti_system_file:s0" | sudo tee -a "$GITHUB_WORKSPACE"/images/config/product_file_contexts
+echo "/product/firmware/vm-system/system\.img u:object_r:vendor_vm_qti_system_file:s0" | sudo tee -a "$GITHUB_WORKSPACE"/images/config/product_file_contexts
+echo "product/firmware 0 0 0755" | sudo tee -a "$GITHUB_WORKSPACE"/images/config/product_fs_config
+echo "product/firmware/vm-system 0 0 0755" | sudo tee -a "$GITHUB_WORKSPACE"/images/config/product_fs_config
+echo "product/firmware/vm-system/system.img 0 0 0644" | sudo tee -a "$GITHUB_WORKSPACE"/images/config/product_fs_config
 curl -s https://api.github.com/repos/BaSO4X/Backup/releases/tags/15pro | grep -o 'https://[^"]*MiuiCamera\.apk' | xargs -I {} aria2c -x16 -s16 -o MiuiCamera.apk {} -d "${GITHUB_WORKSPACE}/images/product/priv-app/MiuiCamera"
+curl -s https://api.github.com/repos/BaSO4X/Backup/releases/tags/15pro | grep -o 'https://[^"]*system\.img' | xargs -I {} aria2c -x16 -s16 -o system.img {} -d "${GITHUB_WORKSPACE}/images/product/firmware/vm-system"
 End_Time 功能修复
 ### 功能修复结束
 
