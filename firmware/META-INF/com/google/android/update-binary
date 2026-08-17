@@ -134,7 +134,7 @@ package_extract_file "images/xbl_ramdump.img" "/dev/block/bootdevice/by-name/xbl
 package_extract_file "images/cust.img" "/dev/block/bootdevice/by-name/cust"
 
 ui_print "- 正在刷写super分区"
-7za e -so "$ZIPFILE" "super.img.zst" | /tmp/bin/android/zstd -c -d >"/dev/block/bootdevice/by-name/super"
+/tmp/bin/android/7zzs e -so "$ZIPFILE" "super.img.zst" | /tmp/bin/android/zstd -c -d >"/dev/block/bootdevice/by-name/super"
 
 
 
