@@ -1,3 +1,4 @@
+#DPI
 persist.miui.density_v2=600
 ro.sf.lcd_density=600
 ro.millet.netlink=31
