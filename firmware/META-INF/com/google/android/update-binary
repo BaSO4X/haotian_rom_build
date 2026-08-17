@@ -1,57 +1,157 @@
-#!/sbin/bash
+#!/sbin/sh
+
 OUTFD=/proc/self/fd/$2
 ZIPFILE="$3"
-ZIPNAME=${ZIPFILE##*/}
 
-[ -d /tmp ] && rm -rf /tmp
-mkdir -p /tmp
-unzip "$ZIPFILE" bin/zstd -d /tmp
-chmod -R 0755 /tmp
-
-ui_print(){
-    echo -e "ui_print $1\nui_print" > $OUTFD
+ui_print() {
+  echo -e "ui_print $1\nui_print" >>$OUTFD
 }
 
 package_extract_file() {
-    unzip -p "$ZIPFILE" $1 >$2
+  ui_print "- 正在刷写分区 $(echo $2 | cut -d '/' -f 6) "
+  unzip -p "$ZIPFILE" $1 >$2
 }
 
 package_extract_zstd() {
-    unzip -p "$ZIPFILE" $1 | /tmp/bin/zstd -k -d >$2
+    unzip -p "$ZIPFILE" $1 | /tmp/bin/android/zstd -k -d >$2
 }
 
-PartitionFilePath=/dev/block/bootdevice/by-name/
-
-flash_partition() {
-    local partition=$1
-    ui_print "刷入$partition分区"
-    package_extract_file "images/$partition.img" "${PartitionFilePath}/${partition}_a"
-    package_extract_file "images/$partition.img" "${PartitionFilePath}/${partition}_b"
+getVolumeKey() {
+	ui_print "- 监听音量键 按[+]选择"是" 按[-]选择"否""
+	keyInfo=true
+	while $keyInfo;do
+		keyInfo=$(getevent -qlc 1 |grep KEY_VOLUME)
+		if [ "$keyInfo" == "" ];then
+			continue
+		else
+			isUpKey=$(echo $keyInfo |grep KEY_VOLUMEUP)
+			[ "$isUpKey" != "" ] && return 0 || return 1
+			break
+		fi
+	done
 }
 
+
+
+[ -d /tmp ] && rm -rf /tmp
+mkdir -p /tmp
+unzip "$ZIPFILE" bin/android/zstd -d /tmp
+chmod -R 0755 /tmp
 ui_print " "
-ui_print "$ZIPNAME"
-ui_print "脚本作者：酷安@閃電Flashh"
-ui_print "ROM作者: 酷安@硫酸钡沉淀"
-ui_print "开始刷写"
+ui_print "========================="
+ui_print "脚本作者：酷安@江南烟雨断桥殇"
+ui_print "ROM作者: 酷安@硫酸钡沉淀"ui_print "========================="
 ui_print " "
 
-for partition in abl aop aop_config bluetooth boot cpucp cpucp_dtb devcfg dsp dtbo featenabler hyp idmanager imagefv init_boot keymaster modem modemfirmware multiimgqti pdp pdp_cdb pvmfw qupfw shrm soccp_dcd soccp_debug spuservice tz uefi uefisecapp vbmeta vbmeta_system vendor_boot vm-bootsys xbl xbl_config xbl_ramdump recovery; do
-    flash_partition $partition                  
-done
+checkDevice
 
-ui_print "刷入super分区"
-package_extract_zstd "super.img.zst" "${PartitionFilePath}/super"
 
-ui_print "刷入cust分区"
-package_extract_file "images/cust.img" "${PartitionFilePath}/cust"
 
+
+
+ui_print "- 开始刷机"
+
+
+#firmware
+package_extract_file "images/abl.img" "/dev/block/bootdevice/by-name/abl_a" 
+package_extract_file "images/abl.img" "/dev/block/bootdevice/by-name/abl_b" 
+package_extract_file "images/aop.img" "/dev/block/bootdevice/by-name/aop_a" 
+package_extract_file "images/aop.img" "/dev/block/bootdevice/by-name/aop_b" 
+package_extract_file "images/aop_config.img" "/dev/block/bootdevice/by-name/aop_config_a" 
+package_extract_file "images/aop_config.img" "/dev/block/bootdevice/by-name/aop_config_b" 
+package_extract_file "images/bluetooth.img" "/dev/block/bootdevice/by-name/bluetooth_a" 
+package_extract_file "images/bluetooth.img" "/dev/block/bootdevice/by-name/bluetooth_b" 
+package_extract_file "images/cpucp.img" "/dev/block/bootdevice/by-name/cpucp_a" 
+package_extract_file "images/cpucp.img" "/dev/block/bootdevice/by-name/cpucp_b" 
+package_extract_file "images/cpucp_dtb.img" "/dev/block/bootdevice/by-name/cpucp_dtb_a" 
+package_extract_file "images/cpucp_dtb.img" "/dev/block/bootdevice/by-name/cpucp_dtb_b" 
+package_extract_file "images/devcfg.img" "/dev/block/bootdevice/by-name/devcfg_a" 
+package_extract_file "images/devcfg.img" "/dev/block/bootdevice/by-name/devcfg_b" 
+package_extract_file "images/dsp.img" "/dev/block/bootdevice/by-name/dsp_a" 
+package_extract_file "images/dsp.img" "/dev/block/bootdevice/by-name/dsp_b" 
+package_extract_file "images/dtbo.img" "/dev/block/bootdevice/by-name/dtbo_a" 
+package_extract_file "images/dtbo.img" "/dev/block/bootdevice/by-name/dtbo_b" 
+package_extract_file "images/featenabler.img" "/dev/block/bootdevice/by-name/featenabler_a" 
+package_extract_file "images/featenabler.img" "/dev/block/bootdevice/by-name/featenabler_b" 
+package_extract_file "images/hyp.img" "/dev/block/bootdevice/by-name/hyp_a" 
+package_extract_file "images/hyp.img" "/dev/block/bootdevice/by-name/hyp_b" 
+package_extract_file "images/idmanager.img" "/dev/block/bootdevice/by-name/idmanager_a" 
+package_extract_file "images/idmanager.img" "/dev/block/bootdevice/by-name/idmanager_b" 
+package_extract_file "images/imagefv.img" "/dev/block/bootdevice/by-name/imagefv_a" 
+package_extract_file "images/imagefv.img" "/dev/block/bootdevice/by-name/imagefv_b" 
+package_extract_file "images/init_boot.img" "/dev/block/bootdevice/by-name/init_boot_a" 
+package_extract_file "images/init_boot.img" "/dev/block/bootdevice/by-name/init_boot_b" 
+package_extract_file "images/keymaster.img" "/dev/block/bootdevice/by-name/keymaster_a" 
+package_extract_file "images/keymaster.img" "/dev/block/bootdevice/by-name/keymaster_b" 
+package_extract_file "images/modem.img" "/dev/block/bootdevice/by-name/modem_a" 
+package_extract_file "images/modem.img" "/dev/block/bootdevice/by-name/modem_b" 
+package_extract_file "images/modemfirmware.img" "/dev/block/bootdevice/by-name/modemfirmware_a" 
+package_extract_file "images/modemfirmware.img" "/dev/block/bootdevice/by-name/modemfirmware_b" 
+package_extract_file "images/multiimgqti.img" "/dev/block/bootdevice/by-name/multiimgqti_a" 
+package_extract_file "images/multiimgqti.img" "/dev/block/bootdevice/by-name/multiimgqti_b" 
+package_extract_file "images/pdp.img" "/dev/block/bootdevice/by-name/pdp_a" 
+package_extract_file "images/pdp.img" "/dev/block/bootdevice/by-name/pdp_b" 
+package_extract_file "images/pdp_cdb.img" "/dev/block/bootdevice/by-name/pdp_cdb_a" 
+package_extract_file "images/pdp_cdb.img" "/dev/block/bootdevice/by-name/pdp_cdb_b" 
+package_extract_file "images/pvmfw.img" "/dev/block/bootdevice/by-name/pvmfw_a" 
+package_extract_file "images/pvmfw.img" "/dev/block/bootdevice/by-name/pvmfw_b" 
+package_extract_file "images/qupfw.img" "/dev/block/bootdevice/by-name/qupfw_a" 
+package_extract_file "images/qupfw.img" "/dev/block/bootdevice/by-name/qupfw_b" 
+package_extract_file "images/recovery.img" "/dev/block/bootdevice/by-name/recovery_a" 
+package_extract_file "images/recovery.img" "/dev/block/bootdevice/by-name/recovery_b" 
+package_extract_file "images/shrm.img" "/dev/block/bootdevice/by-name/shrm_a" 
+package_extract_file "images/shrm.img" "/dev/block/bootdevice/by-name/shrm_b" 
+package_extract_file "images/soccp_dcd.img" "/dev/block/bootdevice/by-name/soccp_dcd_a" 
+package_extract_file "images/soccp_dcd.img" "/dev/block/bootdevice/by-name/soccp_dcd_b" 
+package_extract_file "images/soccp_debug.img" "/dev/block/bootdevice/by-name/soccp_debug_a" 
+package_extract_file "images/soccp_debug.img" "/dev/block/bootdevice/by-name/soccp_debug_b" 
+package_extract_file "images/spuservice.img" "/dev/block/bootdevice/by-name/spuservice_a" 
+package_extract_file "images/spuservice.img" "/dev/block/bootdevice/by-name/spuservice_b" 
+package_extract_file "images/tz.img" "/dev/block/bootdevice/by-name/tz_a" 
+package_extract_file "images/tz.img" "/dev/block/bootdevice/by-name/tz_b" 
+package_extract_file "images/uefi.img" "/dev/block/bootdevice/by-name/uefi_a" 
+package_extract_file "images/uefi.img" "/dev/block/bootdevice/by-name/uefi_b" 
+package_extract_file "images/uefisecapp.img" "/dev/block/bootdevice/by-name/uefisecapp_a" 
+package_extract_file "images/uefisecapp.img" "/dev/block/bootdevice/by-name/uefisecapp_b" 
+package_extract_file "images/vbmeta.img" "/dev/block/bootdevice/by-name/vbmeta_a" 
+package_extract_file "images/vbmeta.img" "/dev/block/bootdevice/by-name/vbmeta_b" 
+package_extract_file "images/vbmeta_system.img" "/dev/block/bootdevice/by-name/vbmeta_system_a" 
+package_extract_file "images/vbmeta_system.img" "/dev/block/bootdevice/by-name/vbmeta_system_b" 
+package_extract_file "images/vendor_boot.img" "/dev/block/bootdevice/by-name/vendor_boot_a" 
+package_extract_file "images/vendor_boot.img" "/dev/block/bootdevice/by-name/vendor_boot_b" 
+package_extract_file "images/boot.img" "/dev/block/bootdevice/by-name/boot_a" 
+package_extract_file "images/boot.img" "/dev/block/bootdevice/by-name/boot_b"
+package_extract_file "images/vm-bootsys.img" "/dev/block/bootdevice/by-name/vm-bootsys_a" 
+package_extract_file "images/vm-bootsys.img" "/dev/block/bootdevice/by-name/vm-bootsys_b" 
+package_extract_file "images/xbl.img" "/dev/block/bootdevice/by-name/xbl_a" 
+package_extract_file "images/xbl.img" "/dev/block/bootdevice/by-name/xbl_b" 
+package_extract_file "images/xbl_config.img" "/dev/block/bootdevice/by-name/xbl_config_a" 
+package_extract_file "images/xbl_config.img" "/dev/block/bootdevice/by-name/xbl_config_b" 
+package_extract_file "images/xbl_ramdump.img" "/dev/block/bootdevice/by-name/xbl_ramdump_a" 
+package_extract_file "images/xbl_ramdump.img" "/dev/block/bootdevice/by-name/xbl_ramdump_b" 
+
+package_extract_file "images/cust.img" "/dev/block/bootdevice/by-name/cust"
+
+ui_print "- 正在刷写super分区"
+7za e -so "$ZIPFILE" "super.img.zst" | /tmp/bin/android/zstd -c -d >"/dev/block/bootdevice/by-name/super"
+
+
+
+ui_print "- 擦除 FRP 分区" 
+dd if=/dev/zero of=/dev/block/bootdevice/by-name/frp
+
+
+
+ui_print "- 清除缓存"
+rm -rf /data/system/package_cache/*
 ui_print " "
-ui_print "清除缓存"
-rm -rf /data/cache/
-rm -rf /data/dalvik-cache/
-rm -rf /data/system/package_cache/
-
 ui_print " "
-ui_print "刷写完成"
+ui_print "- 刷机完毕"
+ui_print "- 红色挂载报错请直接忽首次刷入需要格式化data否则不开机，若是升级直接重启系统即可"
+ui_print "- 红色挂载报错请直接忽首次刷入需要格式化data否则不开机，若是升级直接重启系统即可"
+ui_print "- 红色挂载报错请直接忽首次刷入需要格式化data否则不开机，若是升级直接重启系统即可"
+ui_print "- 详细注意事项阅读酷安帖子，若是升级直接重启系统即可"
+ui_print "- 详细注意事项阅读酷安帖子，若是升级直接重启系统即可"
+ui_print "- 详细注意事项阅读酷安帖子，若是升级直接重启系统即可"
+ui_print " "
 exit 0
