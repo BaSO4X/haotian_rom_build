@@ -40,7 +40,8 @@ chmod -R 0755 /tmp
 ui_print " "
 ui_print "========================="
 ui_print "脚本作者：酷安@江南烟雨断桥殇"
-ui_print "ROM作者: 酷安@硫酸钡沉淀"ui_print "========================="
+ui_print "ROM作者: 酷安@硫酸钡沉淀"
+ui_print "========================="
 ui_print " "
 
 checkDevice
