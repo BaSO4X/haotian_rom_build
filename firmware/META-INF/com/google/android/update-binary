@@ -36,6 +36,7 @@ getVolumeKey() {
 [ -d /tmp ] && rm -rf /tmp
 mkdir -p /tmp
 unzip "$ZIPFILE" bin/android/zstd -d /tmp
+unzip "$ZIPFILE" bin/android/7zzs -d /tmp
 chmod -R 0755 /tmp
 ui_print " "
 ui_print "========================="
