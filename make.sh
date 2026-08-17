@@ -200,6 +200,9 @@ rm -rf "$GITHUB_WORKSPACE"/images/product/data-app/MiRadio
 rm -rf "$GITHUB_WORKSPACE"/images/product/data-app/TinyGame
 rm -rf "$GITHUB_WORKSPACE"/images/product/priv-app/MiniGameService
 rm -rf "$GITHUB_WORKSPACE"/images/product/priv-app/MIUIBrowser
+rm -rf "$GITHUB_WORKSPACE"/images/system_ext/framework/oat/arm64/miui-services.art
+rm -rf "$GITHUB_WORKSPACE"/images/system_ext/framework/oat/arm64/miui-services.odex
+rm -rf "$GITHUB_WORKSPACE"/images/system_ext/framework/oat/arm64/miui-services.vdex
 echo "精简apk完成"
 echo "当前机型为 $model"
 echo "正在复制文件..."
